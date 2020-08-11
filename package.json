@@ -1,0 +1,24 @@
+{
+  "name": "@mariuszpiela/entities-generator",
+  "version": "1.0.0",
+  "description": "Entities generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piela/entities-generator.git"
+  },
+  "author": "Mariusz Piela",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/piela/entities-generator/issues"
+  },
+  "homepage": "https://github.com/piela/entities-generator#readme",
+  "dependencies": {
+    "pluralize": "^7.0.0",
+    "chalk": "^2.4.1",
+    "jsonschema": "^1.2.6"
+  }
+}
