@@ -1,0 +1,91 @@
+{
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "timestamps": {
+            "type": "boolean"
+        },
+        "fields": {
+            "type": "array",
+            "items": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "string",
+                            "date",
+                            "number",
+                            "boolean"
+                        ]
+                    },
+                    "id": {
+                        "type": "boolean"
+                    },
+                    "index": {
+                        "type": "boolean"
+                    },
+                    "unique": {
+                        "type": "boolean"
+                    },
+                    "required": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "name",
+                    "type"
+                ]
+            }
+        },
+        "relations": {
+            "type": "array",
+            "items": {
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "entity": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "embed",
+                            "reference"
+                        ]
+                    },
+                    "relation": {
+                        "type": "string",
+                        "enum": [
+                            "belongsTo",
+                            "hasMany"
+                        ]
+                    },
+                    "onDelete": {
+                        "type": "string",
+                        "enum": [
+                            "setNull",
+                            "noAction",
+                            "restrict",
+                            "cascade"
+                        ]
+                    }
+                },
+                "required": [
+                    "name",
+                    "entity",
+                    "relation"
+                ]
+            }
+        }
+    },
+    "required": [
+        "name",
+        "fields"
+    ]
+}

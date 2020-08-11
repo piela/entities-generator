@@ -1,0 +1,63 @@
+{
+    "type": "object",
+    "properties": {
+        "entity": {
+            "type": "string"
+        },
+        "security": {
+            "type": "object"
+        },
+        "endpoints": {
+            "type": "object",
+            "patternProperties": {
+                "[a-zA-Z]*": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "path": {
+                            "type": "string"
+                        },
+                        "method": {
+                            "type": "string",
+                            "enum": [
+                                "get",
+                                "post",
+                                "put",
+                                "delete"
+                            ]
+                        },
+                        "template": {
+                            "type": "string"
+                        },
+                        "security": {
+                            "type": "object"
+                        },
+                        "routeParameters": {
+                            "type": "array"
+                        },
+                        "query": {
+                            "type": "array"
+                        },
+                        "requestBody": {
+                            "type": "object"
+                        }
+
+                    },
+                    "required": [
+                        "name",
+                        "path",
+                        "method",
+                        "template"
+                    ]
+                }
+            }
+        }
+    },
+    "required": [
+        "entity",
+        "security",
+        "endpoints"
+    ]
+}
