@@ -41,6 +41,33 @@ const fileNameEqualToEntity=(fileName,entity, path)=>
   }
 }
 
+
+
+const checkUniqueness= (array,fieldsNames,entityName)=>
+{
+	
+	array.forEach(item=>{
+	
+		if(fieldsNames.indexOf(item.name)!==-1)
+		{
+			throw Error(`Property "${chalk.red(item.name)}" in "${chalk.green(entityName)}" is duplicated!`);
+		}
+		else
+		{
+			fieldsNames.push(item.name);
+		}
+	
+	});
+}
+
+
+const checkFieldsUniqueness=(entity)=>{
+	
+	const fieldsNames=[];
+	checkUniqueness(entity.fields,fieldsNames,entity.name);
+	checkUniqueness(entity.relations,fieldsNames,entity.name);
+}
+
 const validateEntitiesNames=(entities)=>
 {
   var names=[];
@@ -88,6 +115,7 @@ const readEntities = (source) => {
         
       }
       fileNameEqualToEntity(fileName,entity,path);
+	  checkFieldsUniqueness(entity); 
       entities.push(entity);
 
 
