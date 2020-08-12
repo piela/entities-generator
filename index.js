@@ -5,12 +5,11 @@ const Validator = require('jsonschema').Validator;
 const chalk = require('chalk');
 
 const validator = new Validator({ options: { throwError: true } });
-const BELONGS_TO="belongsTo";
-const HAS_MANY="hasMany";
+const BELONGS_TO = "belongsTo";
+const HAS_MANY = "hasMany";
 
-const loadSchema=()=>
-{
-  const path=`${__dirname}/schemas/Entity.json`;
+const loadSchema = () => {
+  const path = `${__dirname}/schemas/Entity.json`;
   fs.readFileSync(path);
 
   try {
@@ -18,85 +17,76 @@ const loadSchema=()=>
   }
   catch (parseError) {
     throw Error(`${chalk.green(`${path}`)} is not a valid json file!`);
-    
+
   }
 }
 
-const entityExists=(entity,names)=>{
-  entity.relations && entity.relations.forEach((relation)=>{
+const entityExists = (entity, names) => {
+  entity.relations && entity.relations.forEach((relation) => {
 
-    if(names.includes(relation.entity)===false)
-    {
+    if (names.includes(relation.entity) === false) {
       throw Error(`${chalk.green(entity.name)} related to non existing entity ${chalk.red(relation.entity)}!`)
-    }  
-  }) 
+    }
+  })
 
 }
 
-const fileNameEqualToEntity=(fileName,entity, path)=>
-{
-  if(fileName!==entity.name)
-  {
+const fileNameEqualToEntity = (fileName, entity, path) => {
+  if (fileName !== entity.name) {
     throw Error(`File name ${chalk.red(`"${fileName}"`)} is different than property "entity": ${chalk.red(`"${entity.name}"`)} in ${chalk.green(`"${path}"`)} file!`);
   }
 }
 
 
 
-const checkUniqueness= (array,fieldsNames,entityName)=>
-{
-	
-	array.forEach(item=>{
-	
-		if(fieldsNames.indexOf(item.name)!==-1)
-		{
-			throw Error(`Property "${chalk.red(item.name)}" in "${chalk.green(entityName)}" is duplicated!`);
-		}
-		else
-		{
-			fieldsNames.push(item.name);
-		}
-	
-	});
+const checkUniqueness = (array, fieldsNames, entityName) => {
+
+  array.forEach(item => {
+
+    if (fieldsNames.indexOf(item.name) !== -1) {
+      throw Error(`Property ${chalk.red(`"${item.name}"`)}" in ${chalk.green(`"${entityName}"`)} definition is duplicated!`);
+    }
+    else {
+      fieldsNames.push(item.name);
+    }
+
+  });
 }
 
 
-const checkFieldsUniqueness=(entity)=>{
-	
-	const fieldsNames=[];
-	checkUniqueness(entity.fields,fieldsNames,entity.name);
-	checkUniqueness(entity.relations,fieldsNames,entity.name);
+const checkFieldsUniqueness = (entity) => {
+
+  const fieldsNames = [];
+  checkUniqueness(entity.fields, fieldsNames, entity.name);
+  checkUniqueness(entity.relations, fieldsNames, entity.name);
 }
 
-const validateEntitiesNames=(entities)=>
-{
-  var names=[];
-  entities.forEach((entity)=>
-  {
-     names.push(entity.name);
+const validateEntitiesNames = (entities) => {
+  var names = [];
+  entities.forEach((entity) => {
+    names.push(entity.name);
   })
 
-  entities.forEach((entity)=>
-  {
-    entityExists(entity,names);
+  entities.forEach((entity) => {
+    entityExists(entity, names);
   })
-  
+
 }
 
 const validate = (entity, schema) => {
-    validator.validate(entity, schema, { throwError: true })
+  validator.validate(entity, schema, { throwError: true })
 }
 
 const readEntities = (source) => {
 
-  const schema=loadSchema();
+  const schema = loadSchema();
   const files = fs.readdirSync(source);
   let entities = [];
 
   files.forEach((file) => {
     if (file.indexOf("json") > -1) {
       const path = source + "\\" + file;
-      const fileName=file.split(".")[0];
+      const fileName = file.split(".")[0];
 
       try {
         var entity = JSON.parse(fs.readFileSync(path));
@@ -104,7 +94,7 @@ const readEntities = (source) => {
       }
       catch (parseError) {
         throw Error(`${chalk.green(`${path}`)} is not a valid json file!`);
-        
+
       }
 
       try {
@@ -112,16 +102,16 @@ const readEntities = (source) => {
       }
       catch (error) {
         throw Error(`${error.toString().replace('instance', `${chalk.green(fileName)}`)}!`);
-        
+
       }
-      fileNameEqualToEntity(fileName,entity,path);
-	  checkFieldsUniqueness(entity); 
+      fileNameEqualToEntity(fileName, entity, path);
+      checkFieldsUniqueness(entity);
       entities.push(entity);
 
 
     }
 
-    
+
   });
   validateEntitiesNames(entities);
   return entities;
