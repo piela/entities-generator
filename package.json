@@ -1,6 +1,6 @@
 {
   "name": "@mariuszpiela/entities-generator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Entities generator",
   "main": "index.js",
   "scripts": {
