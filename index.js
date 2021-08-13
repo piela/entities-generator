@@ -196,15 +196,21 @@ const processRelations = (relations, entitiesCollection) => {
 }
 
 
-const readTargetRelations = (relation, entitiesCollection) => {
+const readTargetRelations = (relation, entitiesCollection, preventRecursion) => {
 
   var targetResult = { belongsTo: [], hasMany: [] };
   var target = entitiesCollection[relation.entity];
   target.relations && target.relations.forEach((relation) => {
+
+    var targetObject={ ...relation }
+    if(!preventRecursion) {
+      targetObject.targetRelations=readTargetRelations(relation,entitiesCollection,true)
+    }
+
     if (relation.relation === BELONGS_TO) {
-      targetResult.belongsTo.push({ ...relation });
+      targetResult.belongsTo.push(targetObject);
     } else if (relation.relation === HAS_MANY) {
-      targetResult.hasMany.push({ ...relation });
+      targetResult.hasMany.push(targetObject);
     }
   });
   return targetResult;
@@ -314,4 +320,3 @@ module.exports =
   readEntities: readEntities,
   processEntities: processEntities
 }
-
